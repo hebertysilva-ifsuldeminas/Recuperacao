@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Estudos: Tecnologias Web 1 - Bootstrap</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .header-section {
+            padding: 60px 0;
+            background: #0d6efd;
+            color: white;
+            margin-bottom: 40px;
+        }
+        .card-topic {
+            margin-bottom: 30px;
+            border-left: 5px solid #0d6efd;
+        }
+        .tip-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffe69c;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        /* Estilo para os blocos de código */
+        pre {
+            background-color: #212529;
+            color: #20c997;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+        .example-box {
+            background-color: #ffffff;
+            border: 1px dashed #ced4da;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .example-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: #6c757d;
+            margin-bottom: 5px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark fixed-top shadow">
+        <div class="container">
+            <a class="navbar-brand" href="#">🎓 Guia Web 1</a>
+        </div>
+    </nav>
+
+    <header class="header-section mt-5">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold">🚀 Dominando o Bootstrap</h1>
+            <p class="lead">Guia completo para a prova de Tecnologias Web 1</p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section class="card card-topic shadow-sm">
+            <div class="card-body">
+                <h2 class="h4 card-title text-primary">1. O que é o Bootstrap?</h2>
+                <p>O <strong>Bootstrap</strong> é o framework front-end mais popular do mundo para sites <strong>responsivos</strong>.</p>
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item">❌ Não é linguagem de programação.</li>
+                    <li class="list-group-item">❌ Não é banco de dados.</li>
+                    <li class="list-group-item text-success">✅ <strong>Vantagem:</strong> Produtividade e Responsividade.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="card card-topic shadow-sm">
+            <div class="card-body">
+                <h2 class="h4 card-title text-primary">2. O Sistema de Grid (Grade)</h2>
+                <p>O Bootstrap divide a tela em <strong>12 colunas</strong>. A soma das colunas em uma linha deve dar 12.</p>
+                
+                <div class="alert alert-info">
+                    <strong>Conceito:</strong> <code>container</code> > <code>row</code> > <code>col-X-N</code>
+                </div>
+
+                <div>
+                    <span class="example-label">👀 Visualização Prática (3 colunas iguais):</span>
+                    <div class="example-box">
+                        <div class="row text-center text-white">
+                            <div class="col-md-4 p-3 bg-primary border">col-md-4</div>
+                            <div class="col-md-4 p-3 bg-success border">col-md-4</div>
+                            <div class="col-md-4 p-3 bg-danger border">col-md-4</div>
+                        </div>
+                    </div>
+                    
+                    <span class="example-label">💻 Código:</span>
+<pre><code>&lt;div class="row"&gt;
+  &lt;!-- 4 + 4 + 4 = 12 (Linha completa) --&gt;
+  &lt;div class="col-md-4"&gt; Coluna 1 &lt;/div&gt;
+  &lt;div class="col-md-4"&gt; Coluna 2 &lt;/div&gt;
+  &lt;div class="col-md-4"&gt; Coluna 3 &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="card card-topic shadow-sm">
+            <div class="card-body">
+                <h2 class="h4 card-title text-primary">3. Componentes e Classes Essenciais</h2>
+                <p>Memorize a relação entre o nome da classe e o visual:</p>
+
+                <div class="table-responsive mb-4">
+                    <table class="table table-striped table-bordered align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Componente</th>
+                                <th>Exemplo Visual</th>
+                                <th>Classe & Explicação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Botão Sucesso</td>
+                                <td><button class="btn btn-success btn-sm w-100">Enviar</button></td>
+                                <td>
+                                    <code>btn btn-success</code><br>
+                                    <small class="text-muted">Verde (ação positiva)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Botão Perigo</td>
+                                <td><button class="btn btn-danger btn-sm w-100">Excluir</button></td>
+                                <td>
+                                    <code>btn btn-danger</code><br>
+                                    <small class="text-muted">Vermelho (ação perigosa)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Listas</td>
+                                <td>
+                                    <ul class="list-group">
+                                        <li class="list-group-item py-1">Item 1</li>
+                                        <li class="list-group-item py-1">Item 2</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <code>list-group</code><br>
+                                    <small class="text-muted">Cria lista com bordas</small>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <span class="example-label">👀 Exemplo Prático: Tabela Zebrada (Striped)</span>
+                <div class="example-box">
+                    <table class="table table-striped">
+                        <thead><tr><th>#</th><th>Nome</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td>Ana</td></tr>
+                            <tr><td>2</td><td>Bruno</td></tr>
+                            <tr><td>3</td><td>Carla</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <span class="example-label">💻 Código:</span>
+<pre><code>&lt;table class="table table-striped"&gt;
+  &lt;!-- O 'striped' cria o efeito zebrado cinza --&gt;
+  ...
+&lt;/table&gt;</code></pre>
+            </div>
+        </section>
+
+        <section class="card card-topic shadow-sm">
+            <div class="card-body">
+                <h2 class="h4 card-title text-primary">4. Posicionamento e Navegação</h2>
+                
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong><code>position-fixed</code>:</strong> O elemento "flutua" e ignora a rolagem.</li>
+                            <li><strong><code>fixed-top</code>:</strong> Cola o elemento no teto da página (muito usado em menus/navbars).</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                         <span class="example-label">💻 Exemplo de Navbar Fixa:</span>
+<pre><code>&lt;nav class="navbar fixed-top bg-dark"&gt;
+  &lt;!-- Este menu ficará sempre visível
+       mesmo ao rolar a página --&gt;
+  ...
+&lt;/nav&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card card-topic shadow-sm">
+            <div class="card-body">
+                <h2 class="h4 card-title text-primary">5. Estrutura Padrão de Site</h2>
+                <p>Identifique o código abaixo como uma estrutura clássica de layout:</p>
+                
+                <span class="example-label">💻 Esqueleto HTML:</span>
+<pre><code>&lt;!-- 1. Menu Superior Escuro --&gt;
+&lt;nav class="navbar navbar-dark bg-dark"&gt; ... &lt;/nav&gt;
+
+&lt;!-- 2. Conteúdo Principal --&gt;
+&lt;main class="container mt-5"&gt;
+   &lt;h1 class="text-center"&gt;Título&lt;/h1&gt;
+   &lt;div class="row"&gt; ... &lt;/div&gt;
+&lt;/main&gt;
+
+&lt;!-- 3. Rodapé --&gt;
+&lt;footer class="bg-dark text-white py-3"&gt; ... &lt;/footer&gt;</code></pre>
+
+                <ul class="mt-3">
+                    <li><strong>Navbar:</strong> <code>navbar-dark</code> (texto branco) + <code>bg-dark</code> (fundo preto).</li>
+                    <li><strong>Footer:</strong> Classes de espaçamento (<code>py-3</code>) e cores invertidas.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="tip-box mb-5 shadow-sm">
+            <h3 class="h5 fw-bold text-dark">💡 Resumão das Cores (Classes Utilitárias):</h3>
+            <div class="row text-center mt-3 g-2">
+                <div class="col-6 col-md-3">
+                    <div class="p-2 bg-success text-white rounded">bg-success<br><small>Verde</small></div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="p-2 bg-danger text-white rounded">bg-danger<br><small>Vermelho</small></div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="p-2 bg-primary text-white rounded">bg-primary<br><small>Azul</small></div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="p-2 bg-warning text-dark rounded">bg-warning<br><small>Amarelo</small></div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <strong>Dica de Matemática:</strong> Lembre-se, <code>col-md-4</code> cabe 3 vezes (4x3=12). <code>col-md-6</code> cabe 2 vezes (6x2=12).
+            </div>
+        </section>
+
+        <section class="card shadow-sm mb-5 border-0">
+    <div class="card-body p-4 bg-light rounded border-start border-5 border-success">
+        <div class="row align-items-center">
+            <div class="col-md-8 mb-3 mb-md-0">
+                <h3 class="h4 fw-bold text-success">📝 Vamos testar seus conhecimentos?</h3>
+                <p class="mb-0 text-muted">
+                    Está pronto? Faça agora o <strong>Simulado da Recuperação Semestral</strong> 
+                    e veja sua nota na hora, com explicações detalhadas.
+                </p>
+            </div>
+            
+            <div class="col-md-4 text-md-end text-center">
+                <a href="simulado.html" class="btn btn-success btn-lg fw-bold shadow-sm px-4">
+                    Iniciar Simulado 🚀
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+    </main>
+
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-0">Material de Estudo - Tecnologias Web 1</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

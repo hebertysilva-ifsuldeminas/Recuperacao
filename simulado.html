@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulado Final - Tecnologias Web 1</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f2f5;
+        }
+        .header-bg {
+            background: linear-gradient(135deg, #0d6efd, #0a58ca);
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        .question-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+        /* Estilos de Correção */
+        .card-correct {
+            border: 2px solid #198754; /* Borda Verde */
+            background-color: #f8fffb;
+        }
+        .card-wrong {
+            border: 2px solid #dc3545; /* Borda Vermelha */
+            background-color: #fff8f8;
+        }
+        
+        .form-check-label {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .form-check-label:hover {
+            background-color: #e9ecef;
+        }
+        
+        /* Destaque das alternativas após correção */
+        .option-correct {
+            background-color: #d1e7dd !important; /* Fundo verde claro */
+            color: #0f5132;
+            font-weight: bold;
+        }
+        .option-wrong-selected {
+            background-color: #f8d7da !important; /* Fundo vermelho claro */
+            color: #842029;
+            text-decoration: line-through;
+        }
+
+        /* Caixa de explicação */
+        .explanation-box {
+            display: none; /* Escondido inicialmente */
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .sticky-result {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            padding: 15px;
+            z-index: 1000;
+            display: none;
+            text-align: center;
+        }
+
+        /* Indicador de salvamento */
+        .save-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark fixed-top shadow mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="materialrec.html">🎓 Guia Web 1</a>
+        </div>
+    </nav>
+
+    <header class="header-bg text-center mt-5">
+        <div class="container">
+            <h1 class="fw-bold">📝 Simulado Geral: Tecnologias Web 1</h1>
+            <p class="lead mb-0">Suas respostas são salvas automaticamente enquanto você estuda.</p>
+        </div>
+    </header>
+
+    <div class="container mb-5 pb-5">
+        <form id="examForm">
+            <div id="questionsContainer"></div>
+
+            <div class="d-grid gap-2 col-md-6 mx-auto mt-4 mb-5">
+                <button type="submit" class="btn btn-primary btn-lg fw-bold p-3">
+                    ✅ Finalizar e Ver Notas
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <section class="card shadow-sm mt-5 border-0">
+        <div class="card-body p-4 bg-light rounded border-start border-5 border-primary">
+            <div class="row align-items-center">
+                <div class="col-md-8 mb-3 mb-md-0">
+                    <h3 class="h4 fw-bold text-primary">📚 Quer revisar o conteúdo?</h3>
+                    <p class="mb-0 text-muted">
+                        Ficou com dúvida? Pode voltar ao <strong>Guia de Estudos</strong> sem medo.
+                        Suas respostas ficarão salvas aqui até você finalizar a prova.
+                    </p>
+                </div>
+                <div class="col-md-4 text-md-end text-center">
+                    <a href="materialrec.html" class="btn btn-outline-primary btn-lg fw-bold shadow-sm px-4">
+                        ⬅ Voltar ao Guia
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="resultBar" class="sticky-result">
+        <div class="container d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 fw-bold" id="scoreDisplay">Nota: --/10</h4>
+            <div>
+                <span id="msgDisplay" class="me-3 text-muted"></span>
+                <button id="btnRefazer" class="btn btn-outline-secondary btn-sm">🔄 Refazer</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="saveMsg" class="save-indicator">Resposta salva...</div>
+
+<script>
+    // --- BANCO DE DADOS DAS QUESTÕES ---
+    const questionsDB = [
+        { id: 1, text: "1. O que é o Bootstrap?", options: ["Um banco de dados.", "Uma linguagem de programação.", "Um framework front-end para sites responsivos.", "Um editor de vídeo.", "Um sistema operacional."], correct: 2, explanation: "O Bootstrap é um conjunto de códigos CSS e JS prontos (framework) focado em criar interfaces que se adaptam a qualquer tela." },
+        { id: 2, text: "2. Quantas colunas tem o Grid System padrão?", options: ["10 colunas.", "6 colunas.", "8 colunas.", "12 colunas.", "24 colunas."], correct: 3, explanation: "O sistema de grid do Bootstrap é sempre dividido em 12 partes iguais na horizontal." },
+        { id: 3, text: "3. Se usarmos <code>&lt;div class='col-md-4'&gt;</code> três vezes em uma linha, o que acontece?", options: ["Fica uma coluna embaixo da outra.", "Cria 3 colunas de larguras iguais (ocupa 100%).", "As colunas ficam muito pequenas.", "Dá erro no código.", "Cria 4 colunas na tela."], correct: 1, explanation: "Matemática do Grid: 4 + 4 + 4 = 12. Como a soma dá 12, a linha fica perfeitamente preenchida." },
+        { id: 4, text: "4. Qual classe torna a imagem responsiva (não estoura a tela)?", options: ["img-responsive", "img-fluid", "img-auto", "image-resize", "img-mobile"], correct: 1, explanation: "A classe <code>img-fluid</code> aplica <code>max-width: 100%;</code> e <code>height: auto;</code> na imagem." },
+        { id: 5, text: "5. Qual classe cria um botão VERDE (Sucesso)?", options: ["btn-primary", "btn-danger", "btn-success", "btn-warning", "btn-info"], correct: 2, explanation: "Bootstrap usa semântica: Success = Verde, Danger = Vermelho, Primary = Azul, Warning = Amarelo." },
+        { id: 6, text: "6. Para fazer uma tabela zebrada (listrada), usamos:", options: ["table-zebra", "table-striped", "table-bordered", "table-hover", "table-dark"], correct: 1, explanation: "<code>table-striped</code> é a classe específica para adicionar a cor de fundo alternada nas linhas (zebra-striping)." },
+        { id: 7, text: "7. O que <code>position-fixed</code> faz?", options: ["Centraliza o elemento.", "Fixa o elemento em relação à janela (viewport), ignorando o scroll.", "Deixa o elemento fixo dentro da div pai.", "Esconde o elemento.", "Anima o elemento."], correct: 1, explanation: "Elementos com fixed ficam 'presos' na tela, como uma Navbar que te acompanha enquanto você desce a página." },
+        { id: 8, text: "8. Navbar azul com texto branco. Qual o código correto?", options: ["navbar-light bg-primary", "navbar-dark bg-dark", "navbar-dark bg-primary", "navbar-blue bg-white", "navbar-light bg-blue"], correct: 2, explanation: "<code>bg-primary</code> deixa o fundo azul. <code>navbar-dark</code> avisa o Bootstrap para pintar o texto de branco para dar contraste." },
+        { id: 9, text: "9. Para criar listas estilizadas (com bordas), usamos:", options: ["ul-styled", "list-group", "list-bootstrap", "group-item", "list-box"], correct: 1, explanation: "O componente correto é o <code>list-group</code> envolvendo itens com a classe <code>list-group-item</code>." },
+        { id: 10, text: "10. Qual classe controla os botões de 'Próximo/Anterior' no Carrossel?", options: ["carousel-nav", "slider-control", "carousel-control", "btn-slide", "carousel-move"], correct: 2, explanation: "As setas laterais do slider usam as classes baseadas em <code>carousel-control</code>." }
+    ];
+
+    // --- VARIÁVEL PARA O LOCALSTORAGE ---
+    const STORAGE_KEY = 'simulado_web1_respostas_aluno';
+
+    // --- RENDERIZAÇÃO NA TELA ---
+    const container = document.getElementById('questionsContainer');
+
+    questionsDB.forEach((q, index) => {
+        let optionsHTML = '';
+        q.options.forEach((opt, optIndex) => {
+            optionsHTML += `
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q${index}" id="q${index}_opt${optIndex}" value="${optIndex}">
+                    <label class="form-check-label" for="q${index}_opt${optIndex}">
+                        ${String.fromCharCode(97 + optIndex)}) ${opt}
+                    </label>
+                </div>
+            `;
+        });
+
+        const html = `
+            <div class="card question-card p-4" id="card-${index}">
+                <h5 class="fw-bold text-secondary mb-3">${q.text}</h5>
+                <div class="options-area">
+                    ${optionsHTML}
+                </div>
+                <div class="explanation-box mt-3" id="expl-${index}">
+                    <strong>💡 Explicação:</strong> ${q.explanation}
+                </div>
+            </div>
+        `;
+        container.innerHTML += html;
+    });
+
+    // --- LÓGICA DE PERSISTÊNCIA (SALVAR/CARREGAR) ---
+    const form = document.getElementById('examForm');
+    const saveMsg = document.getElementById('saveMsg');
+
+    // Função para salvar no LocalStorage
+    function saveAnswers() {
+        const formData = new FormData(form);
+        const answers = {};
+        for (const [key, value] of formData.entries()) {
+            answers[key] = value;
+        }
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(answers));
+        
+        // Feedback visual
+        saveMsg.style.opacity = '1';
+        setTimeout(() => saveMsg.style.opacity = '0', 1000);
+    }
+
+    // Função para carregar ao iniciar a página
+    function loadAnswers() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            const answers = JSON.parse(saved);
+            for (const [key, value] of Object.entries(answers)) {
+                // Encontra o input correspondente e marca como checked
+                const input = document.querySelector(`input[name="${key}"][value="${value}"]`);
+                if (input) {
+                    input.checked = true;
+                }
+            }
+        }
+    }
+
+    // Escuta qualquer mudança no formulário para salvar
+    form.addEventListener('change', saveAnswers);
+
+    // Carrega as respostas assim que o script roda
+    loadAnswers();
+
+
+    // --- LÓGICA DE CORREÇÃO ---
+    const resultBar = document.getElementById('resultBar');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const msgDisplay = document.getElementById('msgDisplay');
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        let score = 0;
+        let total = questionsDB.length;
+
+        questionsDB.forEach((q, index) => {
+            const card = document.getElementById(`card-${index}`);
+            const expl = document.getElementById(`expl-${index}`);
+            const selectedInput = document.querySelector(`input[name="q${index}"]:checked`);
+            
+            // Travar inputs
+            const allInputs = document.querySelectorAll(`input[name="q${index}"]`);
+            allInputs.forEach(input => input.disabled = true);
+
+            // Mostrar explicação
+            expl.style.display = "block";
+
+            let userRes = selectedInput ? parseInt(selectedInput.value) : -1;
+
+            if (userRes === q.correct) {
+                // ACERTOU
+                score++;
+                card.classList.add('card-correct');
+                document.querySelector(`label[for="q${index}_opt${q.correct}"]`).classList.add('option-correct');
+            } else {
+                // ERROU
+                card.classList.add('card-wrong');
+                document.querySelector(`label[for="q${index}_opt${q.correct}"]`).classList.add('option-correct');
+                if(userRes !== -1) {
+                    document.querySelector(`label[for="q${index}_opt${userRes}"]`).classList.add('option-wrong-selected');
+                }
+            }
+        });
+
+        // Exibir Resultado Final
+        resultBar.style.display = "flex";
+        scoreDisplay.innerText = `Nota Final: ${score} / ${total}`;
+        
+        if(score === total) {
+            msgDisplay.innerText = "Excelente! Gabaritou! 🏆";
+            msgDisplay.className = "me-3 text-success fw-bold";
+        } else if (score >= 6) {
+            msgDisplay.innerText = "Aprovado! Bom trabalho. 👍";
+            msgDisplay.className = "me-3 text-primary fw-bold";
+        } else {
+            msgDisplay.innerText = "Precisa estudar mais o guia. 📚";
+            msgDisplay.className = "me-3 text-danger fw-bold";
+        }
+
+        // Remove o botão de enviar
+        document.querySelector('button[type="submit"]').style.display = 'none';
+
+        // IMPORTANTÍSSIMO: Limpa as respostas salvas, pois o aluno já enviou
+        localStorage.removeItem(STORAGE_KEY);
+
+        // Rola suavemente para o topo
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Lógica do botão Refazer
+    document.getElementById('btnRefazer').addEventListener('click', () => {
+        // Limpa a memória e recarrega
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+    });
+
+</script>
+</body>
+</html>

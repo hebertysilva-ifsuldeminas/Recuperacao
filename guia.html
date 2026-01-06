@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Estudos + Simulado Completo PHP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1d4ed8;
+            --accent-color: #f59e0b;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-color: #1f2937;
+            --text-muted: #6b7280;
+            --code-bg: #1e1e1e;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #3b82f6;
+            --secondary-color: #2563eb;
+            --bg-color: #111827;
+            --card-bg: #1f2937;
+            --text-color: #f9fafb;
+            --text-muted: #9ca3af;
+            --code-bg: #000000;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 4rem 1rem;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 { font-size: 2.8rem; margin-bottom: 0.5rem; font-weight: 700; }
+        header p { font-size: 1.2rem; opacity: 0.9; }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .theme-toggle:hover { background: rgba(255,255,255,0.3); }
+
+        .container {
+            max-width: 900px;
+            margin: -40px auto 40px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-top: 5px solid var(--primary-color);
+        }
+
+        .card h2 {
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 10px;
+        }
+
+        /* Code Blocks */
+        pre {
+            background-color: var(--code-bg);
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Consolas', 'Courier New', monospace;
+            border: 1px solid #333;
+            font-size: 0.95rem;
+        }
+        
+        .code-keyword { color: #569cd6; font-weight: bold; }
+        .code-string { color: #ce9178; }
+        .code-var { color: #9cdcfe; }
+        .code-comment { color: #6a9955; font-style: italic; }
+
+        /* Tips Box */
+        .tip-box {
+            background-color: rgba(37, 99, 235, 0.05);
+            border-left: 4px solid var(--accent-color);
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95rem;
+        }
+
+        /* Quiz Section Styles */
+        .quiz-container {
+            border-top: 5px solid var(--success);
+        }
+
+        .question-block {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed var(--text-muted);
+        }
+        
+        .question-title {
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .quiz-option {
+            display: block;
+            background: rgba(0,0,0,0.03);
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover { background: rgba(0,0,0,0.06); }
+        .quiz-option.selected { 
+            border-color: var(--primary-color); 
+            background: rgba(37, 99, 235, 0.1); 
+            font-weight: 600;
+        }
+        
+        .quiz-feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            display: none;
+        }
+        .correct { background-color: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .incorrect { background-color: rgba(239, 68, 68, 0.2); color: var(--error); }
+
+        .btn {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            font-weight: 700;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn:hover { background-color: #059669; transform: translateY(-2px); }
+
+        footer {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <button class="theme-toggle" onclick="toggleTheme()">
+            <i class="fas fa-adjust"></i> Mudar Tema
+        </button>
+        <h1>Recuperação: Web 2</h1>
+        <p>Resumo Estratégico & Simulado Oficial</p>
+    </header>
+<div class="container">
+
+    <div class="card">
+        <h2><i class="fas fa-server"></i> 1. O que é PHP?</h2>
+        <p><strong>Definição de Prova:</strong> O PHP é uma linguagem <strong>Server-side</strong> (lado do servidor). Ele é usado para criar sites dinâmicos.</p>
+        <div class="tip-box">
+            <i class="fas fa-lightbulb"></i> <strong>Dica:</strong> Diferente do JavaScript (que roda no navegador), o PHP roda no servidor e entrega o HTML pronto.
+        </div>
+    </div>
+
+    <div class="card">
+        <h2><i class="fas fa-code"></i> 2. Sintaxe Básica e Saída</h2>
+        <p>O código PHP deve estar sempre dentro das tags <code>&lt;?php ... ?&gt;</code>. Para escrever na tela, usamos o comando <code>echo</code>.</p>
+        <pre>
+<span class="code-keyword">&lt;?php</span>
+    <span class="code-keyword">echo</span> <span class="code-string">"Olá, Mundo!"</span>; 
+<span class="code-keyword">?&gt;</span></pre>
+        <p class="text-small"><em>Nunca esqueça do ponto e vírgula (;) no final!</em></p>
+    </div>
+
+    <div class="card">
+        <h2><i class="fas fa-project-diagram"></i> 3. Variáveis e Decisão</h2>
+        <ul>
+            <li>Variáveis começam com <strong>$</strong> (cifrão).</li>
+            <li>O <strong>if</strong> verifica se uma condição é verdadeira.</li>
+        </ul>
+        <pre>
+<span class="code-keyword">$x</span> = 10;
+<span class="code-keyword">if</span> (<span class="code-keyword">$x</span> > 5) {
+    <span class="code-keyword">echo</span> <span class="code-string">"Valor maior que 5"</span>;
+}</pre>
+        <div class="tip-box">
+            O código acima imprime "Valor maior que 5" porque 10 é maior que 5.
+        </div>
+    </div>
+
+    <div class="card">
+        <h2><i class="fas fa-tools"></i> 4. Arrays e Strings</h2>
+        <h3>Arrays (Listas)</h3>
+        <p>Podem conter números e textos misturados. Os índices começam em <strong>0</strong>.</p>
+        
+        <h3 style="margin-top: 15px;">Strings (Texto)</h3>
+        <p>Duas coisas vitais para a prova:</p>
+        <ul>
+            <li><strong>Tamanho do texto:</strong> Use a função <code>strlen()</code>.</li>
+            <li><strong>Juntar textos (Concatenar):</strong> Use o operador <strong>ponto (.)</strong>.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2><i class="fas fa-folder-open"></i> 5. Arquivos e Modularização</h2>
+        <p><strong>Include/Require:</strong> Usados para incluir arquivos externos. O <code>require</code> para tudo se der erro (Fatal Error).</p>
+        <p><strong>Abrir Arquivos (fopen):</strong></p>
+        <ul>
+            <li><code>"r"</code>: Leitura (Read).</li>
+            <li><code>"w"</code>: Escrita (Write) - Zera o arquivo e escreve novo.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2><i class="fas fa-shield-alt"></i> 6. Tratamento de Erros (Dissertativa)</h2>
+        <p>Esta é a questão aberta da prova. Memorize:</p>
+        <ul>
+            <li><strong>Try:</strong> Tenta executar um código perigoso.</li>
+            <li><strong>Catch:</strong> Captura o erro se ele acontecer.</li>
+            <li><strong>Finally:</strong> Executa sempre (com erro ou sem), usado para limpeza.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>🚀 Resumão (Cheat Sheet)</h2>
+        <table>
+            <tr><th>Conceito</th><th>Comando/Resposta</th></tr>
+            <tr><td>Exibir na tela</td><td><code>echo "..."</code></td></tr>
+            <tr><td>Variável</td><td><code>$nome</code></td></tr>
+            <tr><td>Contar Letras</td><td><code>strlen()</code></td></tr>
+            <tr><td>Concatenar</td><td>Ponto (<code>.</code>)</td></tr>
+            <tr><td>Abrir p/ Escrita</td><td><code>fopen("...", "w")</code></td></tr>
+        </table>
+    </div>
+
+        <div class="card quiz-container">
+            <h2><i class="fas fa-clipboard-check"></i> Simulado Preparatório</h2>
+            <p style="margin-bottom: 20px;">Responda as 10 questões abaixo. Elas foram criadas com base na lógica da prova de recuperação.</p>
+            
+            <form id="quizForm">
+                
+                <div class="question-block" id="block1">
+                    <p class="question-title">1. Qual a tag correta para iniciar e fechar um bloco de código PHP?</p>
+                    <label class="quiz-option"><input type="radio" name="q1" value="a"> a) &lt;php&gt; ... &lt;/php&gt;</label>
+                    <label class="quiz-option"><input type="radio" name="q1" value="b"> b) &lt;?php ... ?&gt;</label>
+                    <label class="quiz-option"><input type="radio" name="q1" value="c"> c) &lt;script php&gt; ... &lt;/script&gt;</label>
+                    <label class="quiz-option"><input type="radio" name="q1" value="d"> d) &lt;? ... ?&gt; (apenas se short tags estiver ativo)</label>
+                    <label class="quiz-option"><input type="radio" name="q1" value="e"> e) &lt;!php ... !&gt;</label>
+                    <div id="resp1" class="quiz-feedback"></div>
+                </div>
+
+                <div class="question-block" id="block2">
+                    <p class="question-title">2. Analise o código abaixo. O que será exibido?</p>
+                    <pre>
+$a = "Bom";
+$b = "dia";
+echo $a . " " . $b;</pre>
+                    <label class="quiz-option"><input type="radio" name="q2" value="a"> a) Bom+dia</label>
+                    <label class="quiz-option"><input type="radio" name="q2" value="b"> b) Bom dia</label>
+                    <label class="quiz-option"><input type="radio" name="q2" value="c"> c) Erro de sintaxe, pois o operador é +</label>
+                    <label class="quiz-option"><input type="radio" name="q2" value="d"> d) Bom.dia</label>
+                    <label class="quiz-option"><input type="radio" name="q2" value="e"> e) Array</label>
+                    <div id="resp2" class="quiz-feedback"></div>
+                </div>
+
+                <div class="question-block" id="block3">
+                    <p class="question-title">3. Sobre Arrays em PHP, assinale a alternativa INCORRETA:</p>
+                    <label class="quiz-option"><input type="radio" name="q3" value="a"> a) Podem armazenar strings e números no mesmo array.</label>
+                    <label class="quiz-option"><input type="radio" name="q3" value="b"> b) O primeiro índice de um array é 0.</label>
+                    <label class="quiz-option"><input type="radio" name="q3" value="c"> c) Arrays podem ser criados com a função array() ou [].</label>
+                    <label class="quiz-option"><input type="radio" name="q3" value="d"> d) Arrays em PHP só aceitam números inteiros.</label>
+                    <label class="quiz-option"><input type="radio" name="q3" value="e"> e) Podemos acessar um valor usando $array[0].</label>
+                    <div id="resp3" class="quiz-feedback"></div>
+                </div>
+
+                <div class="question-block" id="block4">
+                    <p class="question-title">4. Qual função PHP retorna o comprimento (tamanho) de uma string?</p>
+                    <label class="quiz-option"><input type="radio" name="q4" value="a"> a) length()</label>
+                    <label class="quiz-option"><input type="radio" name="q4" value="b"> b) str_size()</label>
+                    <label class="quiz-option"><input type="radio" name="q4" value="c"> c) count()</label>
+                    <label class="quiz-option"><input type="radio" name="q4" value="d"> d) strlen()</label>
+                    <label class="quiz-option"><input type="radio" name="q4" value="e"> e) stringlength()</label>
+                    <div id="resp4" class="quiz-feedback"></div>
+                </div>
+
+                <div class="question-block" id="block5">
+                    <p class="question-title">5. Você precisa abrir um arquivo para adicionar um log de erro no final dele, SEM apagar o conteúdo antigo. Qual modo do `fopen` você usa?</p>
+                    <label class="quiz-option"><input type="radio" name="q5" value="a"> a) "w" (Write)</label>
+                    <label class="quiz-option"><input type="radio" name="q5" value="b"> b) "r" (Read)</label>
+                    <label class="quiz-option"><input type="radio" name="q5" value="c"> c) "a" (Append)</label>
+                    <label class="quiz-option"><input type="radio" name="q5" value="d"> d) "x" (Executive)</label>
+                    <label class="quiz-option"><input type="radio" name="q5" value="e"> e) "w+" (Write Plus)</label>
+                    <div id="resp5" class="quiz-feedback"></div>
+                </div>
+
+                <div class="question-block" id="block6">
+                    <p class="question-title">6. O que acontece se o arquivo chamado no comando `require 'config.php';` não existir?</p>
+                    <label class="quiz-option"><input type="radio" name="q6" value="a"> a) O script exibe um Warning e continua executando.</label>
+                    <label class="quiz-option"><input type="radio" name="q6" value="b"> b) O script para imediatamente com um Fatal Error.</label>
+                    <label class="quiz-option"><input type="radio" name="q6" value="c"> c) O PHP cria o arquivo automaticamente.</label>
+                    <label class="quiz-option"><input type="radio" name="q6" value="d"> d) Nada acontece, o PHP ignora a linha.</label>
+                    <label class="quiz-option"><input type="radio" name="q6" value="e"> e) O servidor reinicia.</label>
+                    <div id="resp6" class="quiz-feedback"></div>
+                </div>
+
+                <div class="question-block" id="block7">
+                    <p class="question-title">7. Observe o código lógico abaixo:</p>
+                    <pre>
+$nota = 4;
+if ($nota >= 6) {
+    echo "Aprovado";
+} else {
+    echo "Reprovado";
+}</pre>
+                    <p>Qual será a saída?</p>
+                    <label class="quiz-option"><input type="radio" name="q7" value="a"> a) Aprovado</label>
+                    <label class="quiz-option"><input type="radio" name="q7" value="b"> b) Reprovado</label>
+                    <label class="quiz-option"><input type="radio" name="q7" value="c"> c) Nota inválida</label>
+                    <label class="quiz-option"><input type="radio" name="q7" value="d"> d) Nada será exibido</label>
+                    <label class="quiz-option"><input type="radio" name="q7" value="e"> e) Erro de lógica</label>
+                    <div id="resp7" class="quiz-feedback"></div>
+                </div>
+
+                <div class="question-block" id="block8">
+                    <p class="question-title">8. Qual a função do bloco "finally" numa estrutura try-catch?</p>
+                    <label class="quiz-option"><input type="radio" name="q8" value="a"> a) Capturar o erro.</label>
+                    <label class="quiz-option"><input type="radio" name="q8" value="b"> b) Tentar executar o código arriscado.</label>
+                    <label class="quiz-option"><input type="radio" name="q8" value="c"> c) Executar um código apenas se der erro.</label>
+                    <label class="quiz-option"><input type="radio" name="q8" value="d"> d) Executar um código sempre, havendo erro ou não.</label>
+                    <label class="quiz-option"><input type="radio" name="q8" value="e"> e) Finalizar a execução do servidor PHP.</label>
+                    <div id="resp8" class="quiz-feedback"></div>
+                </div>
+
+                <div class="question-block" id="block9">
+                    <p class="question-title">9. Sobre PHP e HTML, é correto afirmar:</p>
+                    <label class="quiz-option"><input type="radio" name="q9" value="a"> a) Não é possível misturar PHP e HTML no mesmo arquivo.</label>
+                    <label class="quiz-option"><input type="radio" name="q9" value="b"> b) O PHP deve ser compilado antes de rodar no navegador.</label>
+                    <label class="quiz-option"><input type="radio" name="q9" value="c"> c) O PHP processa no servidor e envia HTML para o cliente.</label>
+                    <label class="quiz-option"><input type="radio" name="q9" value="d"> d) O HTML processa as variáveis do PHP.</label>
+                    <label class="quiz-option"><input type="radio" name="q9" value="e"> e) O PHP substitui o CSS.</label>
+                    <div id="resp9" class="quiz-feedback"></div>
+                </div>
+
+                <div class="question-block" id="block10">
+                    <p class="question-title">10. Analise a função abaixo:</p>
+                    <pre>
+function mensagem($nome) {
+    return "Olá, " . $nome;
+}
+echo mensagem("Maria");</pre>
+                    <p>O resultado será:</p>
+                    <label class="quiz-option"><input type="radio" name="q10" value="a"> a) Olá, Maria</label>
+                    <label class="quiz-option"><input type="radio" name="q10" value="b"> b) Olá, $nome</label>
+                    <label class="quiz-option"><input type="radio" name="q10" value="c"> c) Erro: variável indefinida</label>
+                    <label class="quiz-option"><input type="radio" name="q10" value="d"> d) mensagem("Maria")</label>
+                    <label class="quiz-option"><input type="radio" name="q10" value="e"> e) null</label>
+                    <div id="resp10" class="quiz-feedback"></div>
+                </div>
+
+                <button type="button" class="btn" onclick="verificarQuiz()">Finalizar e Ver Nota</button>
+            </form>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2025 - Estudo Dirigido para Recuperação</p>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                body.setAttribute('data-theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+            }
+        }
+
+        function verificarQuiz() {
+            // Gabarito correto
+            const respostas = {
+                q1: 'b', // Tags
+                q2: 'b', // Concatenação
+                q3: 'd', // Array só inteiros (falso)
+                q4: 'd', // strlen
+                q5: 'c', // Append
+                q6: 'b', // Require fatal error
+                q7: 'b', // Reprovado (4 < 6)
+                q8: 'd', // Finally
+                q9: 'c', // Server side
+                q10: 'a' // Função retorno
+            };
+
+            let acertos = 0;
+            const total = 10;
+
+            for (let i = 1; i <= total; i++) {
+                const radios = document.getElementsByName('q' + i);
+                const feedback = document.getElementById('resp' + i);
+                let respondido = false;
+                let acertouEssa = false;
+
+                // Reset visual
+                feedback.className = 'quiz-feedback';
+                feedback.style.display = 'none';
+
+                for (const radio of radios) {
+                    if (radio.checked) {
+                        respondido = true;
+                        if (radio.value === respostas['q' + i]) {
+                            acertos++;
+                            acertouEssa = true;
+                            feedback.innerHTML = '<i class="fas fa-check-circle"></i> <strong>Correto!</strong>';
+                            feedback.className = 'quiz-feedback correct';
+                        } else {
+                            feedback.innerHTML = '<i class="fas fa-times-circle"></i> <strong>Incorreto.</strong> A resposta certa seria a alternativa ' + respostas['q' + i].toUpperCase() + '.';
+                            feedback.className = 'quiz-feedback incorrect';
+                        }
+                        feedback.style.display = 'block';
+                    }
+                }
+
+                if (!respondido) {
+                    feedback.innerHTML = '⚠️ Você não respondeu esta questão.';
+                    feedback.className = 'quiz-feedback incorrect';
+                    feedback.style.display = 'block';
+                }
+            }
+
+            // Scroll para o topo do quiz ou alerta final
+            alert(`Você acertou ${acertos} de ${total} questões!`);
+        }
+
+        // Highlight na opção selecionada
+        document.querySelectorAll('.quiz-option input').forEach(input => {
+            input.addEventListener('change', function() {
+                const parent = this.closest('.question-block');
+                parent.querySelectorAll('.quiz-option').forEach(opt => opt.classList.remove('selected'));
+                this.parentElement.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>
