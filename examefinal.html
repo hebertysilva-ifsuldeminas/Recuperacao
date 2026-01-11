@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Exame Final - tecnologias We II</title>
+    <style>
+        :root {
+            --primary: #2563eb; /* Azul Moderno */
+            --secondary: #1e293b; /* Cinza Escuro */
+            --accent: #f59e0b; /* Laranja para destaque */
+            --bg-color: #f8fafc;
+            --text-color: #334155;
+            --code-bg: #1e293b;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar de Navegação */
+        nav {
+            width: 280px;
+            background-color: var(--secondary);
+            color: white;
+            padding: 2rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        nav h2 { font-size: 1.2rem; margin-bottom: 2rem; border-bottom: 1px solid #334155; padding-bottom: 1rem; }
+        nav ul { list-style: none; padding: 0; }
+        nav li { margin-bottom: 1rem; }
+        nav a { 
+            color: #94a3b8; 
+            text-decoration: none; 
+            display: block; 
+            padding: 0.5rem; 
+            border-radius: 6px; 
+            transition: all 0.3s;
+        }
+        nav a:hover, nav a.active { background-color: rgba(255,255,255,0.1); color: white; padding-left: 1rem; }
+
+        /* Conteúdo Principal */
+        main {
+            margin-left: 280px;
+            padding: 3rem 4rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        h1 { font-size: 2.5rem; color: var(--secondary); margin-bottom: 0.5rem; }
+        h2 { font-size: 1.8rem; color: var(--primary); margin-top: 3rem; border-left: 5px solid var(--accent); padding-left: 1rem; }
+        h3 { font-size: 1.3rem; margin-top: 2rem; color: var(--secondary); font-weight: 600; }
+
+        p { margin-bottom: 1.5rem; }
+
+        /* Caixas de Destaque */
+        .concept-box {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            border-top: 4px solid var(--primary);
+        }
+
+        .important {
+            background-color: #fff7ed;
+            border-left: 4px solid var(--accent);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            color: #9a3412;
+        }
+
+        /* Code Blocks */
+        pre {
+            background-color: var(--code-bg);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+        }
+        code { font-family: 'Fira Code', monospace; color: var(--accent); }
+
+        /* Quiz Styles */
+        .quiz-container {
+            margin-top: 2rem;
+        }
+        
+        .question-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .options label {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .options label:hover { border-color: var(--primary); background-color: #eff6ff; }
+        .options input { margin-right: 1rem; }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        .btn:hover { background-color: #1d4ed8; }
+
+        .feedback-msg {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+        }
+        .correct { background-color: #d1fae5; color: #065f46; border: 1px solid #34d399; }
+        .incorrect { background-color: #fee2e2; color: #991b1b; border: 1px solid #f87171; }
+
+        /* Prática */
+        .editor-area {
+            width: 100%;
+            height: 150px;
+            background: #1e293b;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            nav { width: 100%; height: auto; position: relative; padding: 1rem; }
+            main { margin-left: 0; padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <h2>🚀 Exame Final</h2>
+    <ul>
+        <li><a href="#intro" class="active" onclick="navigate(this)">1. Fundamentos & PHP</a></li>
+        <li><a href="#syntax" onclick="navigate(this)">2. Sintaxe & Variáveis</a></li>
+        <li><a href="#files" onclick="navigate(this)">3. Arquivos & Módulos</a></li>
+        <li><a href="#errors" onclick="navigate(this)">4. Tratamento de Erros</a></li>
+        <li><a href="#js" onclick="navigate(this)">5. Front-end (JS)</a></li>
+        <li><a href="#simulado" onclick="navigate(this)">📝 Simulado Prático</a></li>
+    </ul>
+</nav>
+
+<main>
+    <section id="intro">
+        <h1>Guia Definitivo de Estudos</h1>
+        
+        <div class="concept-box">
+            <h2>1. O Grande Conceito: Cliente vs. Servidor</h2>
+            <p>Para entender a prova, você precisa entender onde cada linguagem "mora":</p>
+            <ul>
+                <li><strong>PHP (Server-Side):</strong> O PHP trabalha no servidor. Ele processa regras de negócio, conecta no banco de dados e <em>monta</em> o HTML antes de enviar para você. O usuário final NUNCA vê o código PHP, ele só vê o resultado HTML.</li>
+                <li><strong>JavaScript (Client-Side):</strong> O JS trabalha no seu navegador (Chrome, Edge). Ele manipula a página depois que ela já carregou (animações, validações, cliques).</li>
+            </ul>
+            <div class="important">
+                <strong>Na Prova:</strong> Lembre-se que o PHP gera páginas dinâmicas no servidor. O JavaScript roda no navegador.
+            </div>
+        </div>
+    </section>
+
+    <section id="syntax">
+        <div class="concept-box">
+            <h2>2. Sintaxe e Variáveis PHP</h2>
+            
+            <h3>Tags de Abertura</h3>
+            <p>O PHP só funciona se estiver dentro das tags corretas. Se você esquecer, o navegador vai achar que é apenas texto.</p>
+            <ul>
+                <li>✅ <strong>Correto:</strong> <code>&lt;?php ... ?&gt;</code></li>
+                <li>❌ <strong>Errado:</strong> <code>&lt;php ... &gt;</code> ou <code>&lt;!php ... &gt;</code></li>
+            </ul>
+
+            <h3>Variáveis e Concatenação</h3>
+            <p>Diferente de outras linguagens, o PHP exige um símbolo especial para variáveis.</p>
+            <pre>
+&lt;?php
+    $nome = "Maria";  // Variável sempre tem $
+    $idade = 20;
+    
+    // O PONTO (.) é quem cola as strings, não o +
+    echo "A aluna " . $nome . " tem " . $idade . " anos.";
+?&gt;</pre>
+            
+            <h3>Arrays (Vetores)</h3>
+            <p>Em PHP, Arrays são super flexíveis. Eles podem ter índices numéricos ou textuais e misturar tipos de dados .</p>
+            <pre>$lista = ["Texto", 10, true, 5.5]; // Isso é 100% válido!</pre>
+        </div>
+    </section>
+
+    <section id="files">
+        <div class="concept-box">
+            <h2>3. Arquivos e Modularização</h2>
+            
+            <h3>Include vs Require</h3>
+            <p>Usados para organizar o código (ex: separar o cabeçalho do site).</p>
+            <ul>
+                <li><strong>Include:</strong> Tenta incluir. Se der erro, avisa mas o site continua funcionando.</li>
+                <li><strong>Require:</strong> É obrigatório. Se o arquivo não existir, o script <strong>para totalmente</strong> (Fatal Error).</li>
+            </ul>
+
+            <h3>Manipulação de Arquivos (fopen)</h3>
+            <p>A função <code>fopen()</code> abre arquivos. O segredo está na segunda letra (o modo):</p>
+            <ul>
+                <li><code>"r"</code> (Read): Abre para LEITURA.</li>
+                <li><code>"w"</code> (Write): Abre para ESCRITA. <strong>Atenção:</strong> Se o arquivo já tiver texto, o "w" apaga tudo e começa do zero.</li>
+                <li><code>"a"</code> (Append): Escreve no final sem apagar (não cai na prova, mas bom saber).</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="errors">
+        <div class="concept-box">
+            <h2>4. Tratamento de Erros</h2>
+            <p>Não queremos que o usuário veja erros feios na tela. Usamos blocos de proteção:</p>
+            <ol>
+                <li><strong>Try (Tentar):</strong> Aqui vai o código arriscado (ex: conectar no banco).</li>
+                <li><strong>Catch (Capturar):</strong> Se der erro no Try, o código pula para cá para tratar o problema.</li>
+                <li><strong>Finally:</strong> Executa SEMPRE. Independente se deu erro ou sucesso. Usado para fechar conexões ou limpar memória.</li>
+            </ol>
+        </div>
+    </section>
+
+    <section id="js">
+        <div class="concept-box">
+            <h2>5. JavaScript e DOM</h2>
+            <p>O JS interage com o HTML através do DOM (Document Object Model).</p>
+            
+            <h3>Selecionando Elementos</h3>
+            <p>Para pegar um elemento específico:</p>
+            <pre>document.getElementById("minhaDiv");</pre>
+            <p><em>Atenção aos detalhes:</em> "Element" é singular. O ID vai entre aspas.</p>
+
+            <h3>Eventos</h3>
+            <p>Como reagir ao usuário? Usamos atributos de evento no HTML ou listeners no JS.</p>
+            <ul>
+                <li><strong>onclick:</strong> Dispara quando o mouse clica no elemento.</li>
+                <li><strong>onchange:</strong> Dispara quando o valor de um input muda.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="simulado">
+        <style>
+        
+        /* Estilo do Editor de Código */
+        .editor-container {
+            background: #1e1e1e; /* Dark theme */
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            color: #d4d4d4;
+            border: 1px solid #333;
+        }
+        .editor-area {
+            width: 100%;
+            height: 120px;
+            background: #2d2d2d;
+            border: none;
+            color: #9cdcfe;
+            font-family: monospace;
+            padding: 10px;
+            font-size: 14px;
+            resize: vertical;
+            outline: none;
+            border-left: 2px solid #555;
+        }
+        .editor-area:focus { border-left-color: #007acc; }
+        .console-log {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            display: none;
+            border-left: 3px solid #0f0;
+        }
+        .console-error {
+            color: #ff5555;
+            border-left-color: #ff5555;
+        }
+    </style>
+    <h2>📝 Simulado "Prova Real" (Remixado)</h2>
+        <p>Estas questões testam os mesmos conceitos da prova, mas com cenários diferentes para garantir que você aprendeu a lógica.</p>
+
+        <form id="examForm">
+            
+            <div class="question-card" id="q1">
+                <h3>1. Lógica Server-Side</h3>
+                <p>Você foi contratado para criar um sistema onde o HTML precisa mudar dependendo se o usuário é "Admin" ou "Visitante". Qual tecnologia deve processar essa lógica antes da página chegar ao navegador?</p>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="wrong1"> JavaScript, pois ele roda no servidor.</label>
+                    <label><input type="radio" name="q1" value="correct"> PHP, pois é uma linguagem server-side.</label>
+                    <label><input type="radio" name="q1" value="wrong2"> HTML, usando a tag &lt;logic&gt;.</label>
+                </div>
+                <div class="feedback-msg"></div>
+            </div>
+
+            <div class="question-card" id="q2">
+                <h3>2. Sintaxe de Exibição</h3>
+                <p>Observe o código abaixo e identifique o erro:</p>
+                <pre>&lt;php echo "Bem vindo"; ?&gt;</pre>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="wrong1"> O comando echo não existe em PHP, apenas echo.</label>
+                    <label><input type="radio" name="q2" value="correct"> A tag de abertura está errada. Deveria ser &lt;?php.</label>
+                    <label><input type="radio" name="q2" value="wrong2"> Faltou parênteses no echo.</label>
+                </div>
+                <div class="feedback-msg"></div>
+            </div>
+
+            <div class="question-card" id="q3">
+                <h3>3. Manipulação de Strings</h3>
+                <p>Temos <code>$nome = "Ana";</code> e <code>$sobrenome = "Silva";</code>. Qual comando exibe "Ana Silva" corretamente?</p>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="wrong1"> echo $nome + $sobrenome;</label>
+                    <label><input type="radio" name="q3" value="wrong2"> echo "$nome . $sobrenome";</label>
+                    <label><input type="radio" name="q3" value="correct"> echo $nome . " " . $sobrenome;</label>
+                </div>
+                <div class="feedback-msg"></div>
+            </div>
+
+             <div class="question-card" id="q4">
+                <h3>4. Escrita de Arquivos</h3>
+                <p>Você precisa criar um log de erros. Qual comando abre o arquivo <code>erros.txt</code> preparando-o para escrever conteúdo novo (apagando o antigo ou criando se não existir)?</p>
+                <div class="options">
+                    <label><input type="radio" name="q4" value="wrong1"> fopen("erros.txt", "r");</label>
+                    <label><input type="radio" name="q4" value="wrong2"> include("erros.txt");</label>
+                    <label><input type="radio" name="q4" value="correct"> fopen("erros.txt", "w");</label>
+                </div>
+                <div class="feedback-msg"></div>
+            </div>
+
+            <div class="question-card" id="q5">
+                <h3>5. Fluxo de Erros</h3>
+                <p>Em um bloco <code>Try / Catch / Finally</code>, se o código dentro do <strong>Try</strong> for executado com sucesso (sem erros), o que acontece em seguida?</p>
+                <div class="options">
+                    <label><input type="radio" name="q5" value="wrong1"> O Catch é executado para confirmar o sucesso.</label>
+                    <label><input type="radio" name="q5" value="wrong2"> A execução para imediatamente.</label>
+                    <label><input type="radio" name="q5" value="correct"> O Catch é pulado e o Finally é executado.</label>
+                </div>
+                <div class="feedback-msg"></div>
+            </div>
+
+             <div class="question-card" id="q6">
+                <h3>6. JavaScript DOM</h3>
+                <p>No HTML temos: <code>&lt;div id="resultado"&gt;&lt;/div&gt;</code>. Como alterar o texto dessa div usando JS?</p>
+                <div class="options">
+                    <label><input type="radio" name="q6" value="correct"> document.getElementById("resultado").innerText = "Novo Texto";</label>
+                    <label><input type="radio" name="q6" value="wrong1"> document.getElement("resultado").value = "Novo Texto";</label>
+                    <label><input type="radio" name="q6" value="wrong2"> window.selectId("resultado").text = "Novo Texto";</label>
+                </div>
+                <div class="feedback-msg"></div>
+            </div>
+
+            <button type="button" class="btn" onclick="corrigirSimulado()">✅ Validar Respostas</button>
+        </form>
+
+        <hr style="margin: 3rem 0; border-color: #e2e8f0;">
+
+    <hr style="margin: 4rem 0; border-color: #cbd5e0;">
+
+    <h2>💻 Laboratório de Código (Correção Automática)</h2>
+    <p>O sistema abaixo simula um interpretador PHP. Complete o código para verificar se o aluno está <strong>Aprovado</strong> (Nota maior ou igual a 6) ou <strong>Reprovado</strong>.</p>
+    
+    <div class="editor-container">
+        <p style="color:#6a9955; margin:0 0 10px 0;">// Complete a lógica abaixo:</p>
+        <p style="color:#569cd6; margin:0;">&lt;?php</p>
+        <p style="color:#9cdcfe; margin:0;">$nota = 7.5;</p>
+        
+        <textarea id="codeAttempt" class="editor-area" placeholder="// Escreva seu if ($nota >= ...) { echo ... } else { ... }" spellcheck="false"></textarea>
+        
+        <p style="color:#569cd6; margin:0;">?&gt;</p>
+    </div>
+    
+    <div id="consoleResult" class="console-log"></div>
+
+    <div style="display: flex; gap: 10px; margin-top: 15px;">
+        <button class="btn" style="background-color: var(--accent);" onclick="validarCodigoPratico()">▶️ Rodar Código</button>
+        <button class="btn" style="background-color: #718096;" onclick="mostrarGabarito()">👁️ Ver Resposta Certa</button>
+    </div>
+    
+    <div id="gabaritoPratico" style="display:none; margin-top:1.5rem; background:#2d3748; color:#fff; padding:15px; border-radius:8px;">
+        <strong>Solução Esperada:</strong>
+        <pre style="color:#9cdcfe;">
+if ($nota >= 6) {
+    echo "Aprovado";
+} else {
+    echo "Reprovado";
+}</pre>
+    </div>
+
+</section>
+
+<script>
+    function navigate(element) {
+        // Remove active class from all links
+        document.querySelectorAll('nav a').forEach(link => link.classList.remove('active'));
+        // Add active to clicked
+        element.classList.add('active');
+    }
+
+    function corrigirSimulado() {
+        // Configuração das Respostas
+        const respostas = {
+            q1: {
+                type: 'correct',
+                msg: 'Exato! PHP é server-side. JavaScript é client-side (embora exista Node.js, no contexto da web clássica da prova, JS é front).'
+            },
+            q2: {
+                type: 'correct',
+                msg: 'Isso! A tag curta <php não existe. O padrão é &lt;?php.'
+            },
+            q3: {
+                type: 'correct',
+                msg: 'Perfeito. O operador "+" soma números. Para colar texto (concatenar), usamos o ponto "."'
+            },
+            q4: {
+                type: 'correct',
+                msg: 'Correto. "w" é para Write (escrever). "r" seria Read (ler).'
+            },
+            q5: {
+                type: 'correct',
+                msg: 'Excelente. O Finally SEMPRE executa, independente de erro ou sucesso.'
+            },
+            q6: {
+                type: 'correct',
+                msg: 'Muito bem. getElementById (singular) e o ID entre aspas.'
+            }
+        };
+
+        let acertos = 0;
+        let total = 6;
+
+        for (let i = 1; i <= total; i++) {
+            const qID = 'q' + i;
+            const options = document.getElementsByName(qID);
+            const feedbackBox = document.querySelector(`#${qID} .feedback-msg`);
+            let respondido = false;
+
+            feedbackBox.style.display = 'block';
+            feedbackBox.className = 'feedback-msg'; // Reset classes
+
+            for (let op of options) {
+                if (op.checked) {
+                    respondido = true;
+                    if (op.value === 'correct') {
+                        acertos++;
+                        feedbackBox.innerHTML = "✅ " + respostas[qID].msg;
+                        feedbackBox.classList.add('correct');
+                    } else {
+                        feedbackBox.classList.add('incorrect');
+                        // Feedback personalizado para erro
+                        if(qID === 'q1') feedbackBox.innerHTML = "❌ Errado. Lembre-se: O código PHP nunca chega ao navegador, ele roda no servidor antes.";
+                        if(qID === 'q2') feedbackBox.innerHTML = "❌ Errado. O erro está na tag inicial. PHP exige &lt;?php ou &lt;?.";
+                        if(qID === 'q3') feedbackBox.innerHTML = "❌ Errado. Em PHP, '+' faz matemática. Ponto '.' faz concatenação.";
+                        if(qID === 'q4') feedbackBox.innerHTML = "❌ Errado. 'r' é leitura. Para escrita usamos 'w'.";
+                        if(qID === 'q5') feedbackBox.innerHTML = "❌ Errado. O Finally sempre roda. Se não deu erro, o Catch é ignorado, mas o Finally roda.";
+                        if(qID === 'q6') feedbackBox.innerHTML = "❌ Errado. Verifique a sintaxe: getElementById (com Element no singular).";
+                    }
+                }
+            }
+
+            if (!respondido) {
+                feedbackBox.innerHTML = "⚠️ Você pulou esta questão.";
+                feedbackBox.classList.add('incorrect');
+            }
+        }
+
+        alert(`Você acertou ${acertos} de ${total} questões! Verifique os feedbacks detalhados em cada cartão.`);
+    }
+
+    function mostrarSolucaoPratica() {
+        const area = document.getElementById('gabaritoPratico');
+        area.style.display = 'block';
+        area.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // --- LÓGICA DO CORRETOR AUTOMÁTICO (Simulador) ---
+    function validarCodigoPratico() {
+        const input = document.getElementById('codeAttempt').value;
+        const consoleDiv = document.getElementById('consoleResult');
+        consoleDiv.style.display = 'block';
+        
+        // Limpeza básica
+        let code = input.trim();
+        
+        // 1. Verificação de Variável
+        if (!code.includes('$nota')) {
+            consoleDiv.innerHTML = "> Error: Undefined variable. <br>⚠️ Você esqueceu de usar a variável <strong>$nota</strong> ou esqueceu o cifrão ($).";
+            consoleDiv.className = "console-log console-error";
+            return;
+        }
+
+        // 2. Verificação de Estrutura IF/ELSE
+        if (!code.toLowerCase().includes('if') || !code.toLowerCase().includes('else')) {
+            consoleDiv.innerHTML = "> Parse Error: Syntax error. <br>⚠️ Sua lógica precisa ter uma estrutura <strong>if</strong> e um <strong>else</strong>.";
+            consoleDiv.className = "console-log console-error";
+            return;
+        }
+
+        // 3. Verificação de Condição Lógica (>= 6)
+        // Regex procura por $nota, seguido opcionalmente de espaço, depois >=, depois espaço, depois 6
+        const logicaCorreta = /(\$nota\s*>=\s*6)|(6\s*<=\s*\$nota)/;
+        if (!logicaCorreta.test(code)) {
+            consoleDiv.innerHTML = "> Logic Error. <br>⚠️ A condição deve verificar se a nota é <strong>maior ou igual a 6</strong> (>= 6).";
+            consoleDiv.className = "console-log console-error";
+            return;
+        }
+
+        // 4. Verificação de Ponto e Vírgula (Erro clássico)
+        if (!code.includes(';')) {
+            consoleDiv.innerHTML = "> Parse Error: expecting ';'. <br>⚠️ Você esqueceu o <strong>ponto e vírgula</strong> no final das linhas de comando (echo).";
+            consoleDiv.className = "console-log console-error";
+            return;
+        }
+
+        // 5. Verificação de Saída (Echo)
+        if (!code.toLowerCase().includes('echo') && !code.toLowerCase().includes('print')) {
+            consoleDiv.innerHTML = "> Output Error. <br>⚠️ Use o comando <strong>echo</strong> para escrever 'Aprovado' ou 'Reprovado' na tela.";
+            consoleDiv.className = "console-log console-error";
+            return;
+        }
+
+        // SUCESSO!
+        consoleDiv.innerHTML = "> PHP Output:<br><strong>Aprovado</strong><br><br><span style='color:#fff'>✨ Parabéns! Seu código passou em todos os testes de lógica e sintaxe.</span>";
+        consoleDiv.className = "console-log";
+    }
+</script>
+</body>
+</html>
